@@ -10,7 +10,7 @@ $result = mysqli_query($sql, $query);
 $response = array();
 
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-  array_push($response, $row["types"]);
+  array_push($response, $row["type"]);
 }
 
 mysqli_free_result($result);
