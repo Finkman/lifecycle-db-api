@@ -13,9 +13,7 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
   array_push($response, $row["types"]);
 }
 
-echo "<pre>";
-var_dump($response);
-echo "</pre>";
+mysqli_free_result($result);
 
 $json = json_encode($response);
 echo "<pre>";
