@@ -1,20 +1,16 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT']."/php_class/SqlConnection.inc");
+require_once($_SERVER['DOCUMENT_ROOT']."/config/config.php");
 
-$sql = new SqlConnection("d029cff0");
+$sql = mysqli_connect(config\DB_HOST, config\DB_USER, config\DB_PASS, config\DB_NAME);
 
 $query = "SELECT * FROM entryTypes";
 
-$result = $sql->SendQuery($query);
-
-echo "<pre>";
-var_dump($result);
-echo "</pre>";
+$result = mysqli_query($sql, $query);
 
 $response = array();
 
-foreach($result as $value){
-  array_push($response, $value["types"]);
+while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+  array_push($response, $row["types"]);
 }
 
 echo "<pre>";
