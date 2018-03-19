@@ -20,4 +20,5 @@ echo "<pre>";
 echo $json;
 echo "</pre>";
 
+mysqli_close($sql);
 ?>
