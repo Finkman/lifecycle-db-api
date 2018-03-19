@@ -1,9 +1,16 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT']."/api/config/config.php");
 
+if(isset($_GET['device'])){
+  $id = urldecode($_GET['device']);
+  $whereClause = "WHERE d.device = ".$id;
+}else{
+  $whereClause = "WHERE 1";
+}
+
 $sql = mysqli_connect(config\DB_HOST, config\DB_USER, config\DB_PASS, config\DB_NAME);
-$typeName = urldecode($_GET["type"]);
-$query = "SELECT t.type, e.data, count(e.data) as count FROM `deviceEntries` as e INNER JOIN `entryTypes` as t on e.type = t.id  WHERE t.type = \"".$typeName."\" GROUP BY data ORDER BY COUNT DESC LIMIT 100";
+
+$query = "SELECT d.id, t.type, d.date, d.data FROM `deviceEntries` AS d INNER JOIN `entryTypes` as t on d.type = t.id ".$whereClause;
 
 $result = mysqli_query($sql, $query);
 

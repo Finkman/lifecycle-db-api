@@ -1,5 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT']."/config/config.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/api/config/config.php");
 
 $sql = mysqli_connect(config\DB_HOST, config\DB_USER, config\DB_PASS, config\DB_NAME);
 
@@ -16,6 +16,7 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 mysqli_free_result($result);
 
 $json = json_encode($response);
+header('Content-Type: application/json');
 echo $json;
 
 mysqli_close($sql);
