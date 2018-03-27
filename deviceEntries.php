@@ -30,6 +30,7 @@ if(!$isOnPostMode)
   mysqli_free_result($result);
 
   $json = json_encode($response);
+  header("Access-Control-Allow-Origin: *");
   header('Content-Type: application/json');
   echo $json;
 
