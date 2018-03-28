@@ -1,5 +1,6 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT']."/api/config/config.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/api/components/config.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/api/components/response.php");
 
 $rawPostData = file_get_contents('php://input');
 
@@ -29,10 +30,7 @@ if(!$isOnPostMode)
 
   mysqli_free_result($result);
 
-  $json = json_encode($response);
-  header("Access-Control-Allow-Origin: *");
-  header('Content-Type: application/json');
-  echo $json;
+  JsonProtocol::sendResponse($response);
 
 }
 else
@@ -57,11 +55,10 @@ else
   $query = "INSERT INTO `deviceEntries` (`device`, `type`, `date`, `data`) VALUES ('".$postObj->device."', '".$typeId."', '".$date."', '".$data."')";
   $resulst = mysqli_query($sql, $query);
 
-  header('Content-Type: application/json');
   if($result){
-    echo $rawPostData;
+    JsonProtocol::sendResponse($rawPostData);
   }else{
-    echo json_encode(false);
+    JsonProtocol::sendResponse(false);
   }
 }
 
