@@ -6,6 +6,6 @@ const DB_USER = "d029cff0";
 const DB_NAME = "d029cff0";
 const DB_HOST = "localhost";
 const TOKEN_EXPIRY = 1*24*60*60;
-const TOKEN_SECRET = "98%!245n.231.129?asd";
+const TOKEN_SECRET = "asdasd98%!245n.231.129?asd";
 
 ?>

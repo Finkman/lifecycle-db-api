@@ -2,8 +2,6 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/api/components/config.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/api/helpers/jwt.php");
 
-$jwtKey = config\TOKEN_SECRET;
-
 class Auth{
 
   public static function fetchUserByName($nickname){
@@ -40,8 +38,8 @@ class Auth{
     $payload["exp"] = time() + config\TOKEN_EXPIRY;
 
     //$userData["tp"] = $payload;
-    
-    $token = JWT::encode($payload, $jwtKey);
+    $key = config\TOKEN_SECRET;
+    $token = JWT::encode($payload, $key);
 
     $userData["token"] = $token;
 
@@ -71,6 +69,7 @@ class Auth{
   public static function checkToken(){
     try{
       $tokenLoad = (array)self::getUserFromToken();
+      //var_dump($tokenLoad);
       if($tokenLoad == NULL) return false;
       // check if token is to old, or to young
       if($tokenLoad["nbf"] > time()){
@@ -99,8 +98,10 @@ class Auth{
     }
 
     // try{
-      $decoded = JWT::decode($token, $jwtKey);
-      return $decoded;
+    $key = config\TOKEN_SECRET;
+    $decoded = JWT::decode($token, $key, true);
+    // $decoded = JWT::decode($token, "huhu", true);
+    return $decoded;
     // }
     // catch(Throwable $t){
     //   return null;

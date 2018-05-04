@@ -29,7 +29,7 @@ class JWT
 	 * @uses jsonDecode
 	 * @uses urlsafeB64Decode
 	 */
-	public static function decode($jwt, $key = null, $verify = true)
+	public static function decode($jwt, $key, $verify = true)
 	{
 		$tks = explode('.', $jwt);
 		if (count($tks) != 3) {
@@ -48,6 +48,7 @@ class JWT
 				throw new DomainException('Empty algorithm');
 			}
 			if ($sig != JWT::sign("$headb64.$bodyb64", $key, $header->alg)) {
+				echo "STEP1-ERROR";
 				throw new UnexpectedValueException('Signature verification failed');
 			}
 		}
