@@ -48,6 +48,45 @@ class Auth{
     return $userData;
   }
 
+  /**
+   * This function will cause 403, if no valid
+   * token has been send.
+   */
+  public static function restrictAccess(){
+    if($_SERVER['REQUEST_METHOD'] == "OPTIONS"){
+      header("HTTP/1.1 200 OK");
+      header("Access-Control-Allow-Headers: Content-Type, Authorization, Post, Get");
+      header("Access-Control-Allow-Origin: *");
+      exit();
+    }
+    if(!self::checkToken()){
+      header("HTTP/1.1 401 Unauthorized" );
+      die('Unauthorized');
+    }
+  }
+
+  /**
+   * This function will check token and re-new it
+   */
+  public static function checkToken(){
+    try{
+      $tokenLoad = (array)self::getUserFromToken();
+      if($tokenLoad == NULL) return false;
+      // check if token is to old, or to young
+      if($tokenLoad["nbf"] > time()){
+        return false;
+      }
+
+      if($tokenLoad["exp"] < time()){
+        return false;
+      }
+
+    }catch(Throwable $t){
+      return false;
+    }
+
+    return true;
+  }
 
   /**
    * Get the user data from token, if sent.

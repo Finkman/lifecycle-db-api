@@ -1,8 +1,11 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT']."/api/components/config.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/api/components/response.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/api/components/authorization.php");
 
 $rawPostData = file_get_contents('php://input');
+
+Auth::restrictAccess();
 
 $isOnPostMode = $rawPostData ? true : false;
 

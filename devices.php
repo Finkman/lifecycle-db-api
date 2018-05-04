@@ -1,6 +1,9 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT']."/api/components/config.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/api/components/response.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/api/components/authorization.php");
+
+Auth::restrictAccess();
 
 const FW_TYPE_ID = 2;
 const HW_TYPE_ID = 1;
