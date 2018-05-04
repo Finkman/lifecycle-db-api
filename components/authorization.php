@@ -2,7 +2,7 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/api/components/config.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/api/helpers/jwt.php");
 
-$jwtKey = "secret_server_key";
+$jwtKey = config\TOKEN_SECRET;
 
 class Auth{
 
