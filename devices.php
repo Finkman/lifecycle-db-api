@@ -36,7 +36,7 @@ if(isset($_GET['device'])){
 
 $sql = mysqli_connect(config\DB_HOST, config\DB_USER, config\DB_PASS, config\DB_NAME);
 
-$query = "SELECT * FROM devices ".$whereClause;
+$query = "SELECT id, sn, project as projectId, production_date FROM devices ".$whereClause;
 
 $result = mysqli_query($sql, $query);
 
@@ -44,8 +44,8 @@ $response = array();
 
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 
-  $row["fwVersion"] = getLatestDeviceEntry($sql, $row["id"], FW_TYPE_ID);
   $row["hwVersion"] = getLatestDeviceEntry($sql, $row["id"], HW_TYPE_ID);
+  $row["fwVersion"] = getLatestDeviceEntry($sql, $row["id"], FW_TYPE_ID);
 
   array_push($response, $row);
 }
