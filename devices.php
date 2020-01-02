@@ -24,7 +24,6 @@ function getLatestDeviceEntry($connection, $deviceId, $typeId, $defaultValue = "
 
 function getLocation($connection, $deviceId){
   $query = "SELECT `type` FROM `deviceEntries` as e WHERE (`type` = 4 OR `type` = 6) AND `device` = ".$deviceId." ORDER BY `date` DESC LIMIT 1";
-  mysqli_free_result($nestedResult);
   $nestedResult = mysqli_query($connection,$query);
   $nestedRow = mysqli_fetch_array($nestedResult, MYSQLI_ASSOC);
   mysqli_free_result($nestedResult);
