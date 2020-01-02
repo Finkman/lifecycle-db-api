@@ -7,6 +7,8 @@ Auth::restrictAccess();
 
 const FW_TYPE_ID = 2;
 const HW_TYPE_ID = 1;
+const SHIP_TYPE_ID = 4;
+const DELIV_TYPE_ID = 6;
 
 function getLatestDeviceEntry($connection, $deviceId, $typeId, $defaultValue = ""){
   $query =  "SELECT data FROM `deviceEntries` as e WHERE type = ".$typeId." AND device = ".$deviceId." ORDER BY date DESC LIMIT 1";
@@ -17,6 +19,19 @@ function getLatestDeviceEntry($connection, $deviceId, $typeId, $defaultValue = "
     return $nestedRow["data"];
   }else{
     return $defaultValue;
+  }
+}
+
+function getLocation($connection, $deviceId){
+  $query = "SELECT `type` FROM `deviceEntries` as e WHERE (`type` = 4 OR `type` = 6) AND `device` = ".$deviceId." ORDER BY `date` DESC LIMIT 1";
+  mysqli_free_result($nestedResult);
+  $nestedResult = mysqli_query($connection,$query);
+  $nestedRow = mysqli_fetch_array($nestedResult, MYSQLI_ASSOC);
+  mysqli_free_result($nestedResult);
+  if($nestedRow){
+    return ($nestedRow["type"] == SHIP_TYPE_ID) ? "shipped" : "local";
+  }else{
+    return "?";
   }
 }
 
@@ -46,6 +61,7 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 
   $row["hwVersion"] = getLatestDeviceEntry($sql, $row["id"], HW_TYPE_ID);
   $row["fwVersion"] = getLatestDeviceEntry($sql, $row["id"], FW_TYPE_ID);
+  $row["location"] = getLocation($sql, $row["id"]);
 
   array_push($response, $row);
 }
